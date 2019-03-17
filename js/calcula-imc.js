@@ -1,69 +1,45 @@
-document.querySelector(".titulo");
-var titulo = document.querySelector(".titulo");
-titulo.textContent = "Aparecida Nutricionista";
-//Seleção das classes paciente
-var pacientes = document.querySelectorAll(".paciente");
-	
-	for (i = 0; i < pacientes.length; i++){
-		var paciente = pacientes[i];
-	
- 
+//calcula-imc.js
 
-var tdPeso = paciente.querySelector(".info-peso");
-var peso = tdPeso.textContent;
+var botao = document.getElementById("calcula-imcs");
+botao.addEventListener("click", function() {
 
-var tdAltura = paciente.querySelector(".info-altura");
-var altura = tdAltura.textContent;
+	var trsPacientes = document.getElementsByClassName("paciente");
 
-var tdImc = paciente.querySelector(".info-imc");
+	precorreArray(trsPacientes, function (pacienteTr){
 
-	
+	    var tdNome = pacienteTr.getElementsByClassName("info-nome")[0]; 
+	    var tdPeso = pacienteTr.getElementsByClassName("info-peso")[0]; 
+	    var tdAltura = pacienteTr.getElementsByClassName("info-altura")[0];
 
-//verificação dos dados antes de calcular o- IMC
-	var pesoEhvalido = validaPeso(peso);
-	var alturaEhvalido= validaAltura(altura);
-		if(!pesoEhvalido){
-			pesoEhvalido = false;
-			tdImc.textContent = "Peso inválido";
-			paciente.classList.add("paciente-invalido");
-		}
-		if(!alturaEhvalido){
-		alturaEhvalido = false;
-		tdImc.textContent = "Altura inválida";
-		paciente.classList.add("paciente-invalido");
-		}
-		if(pesoEhvalido && alturaEhvalido){
-			var imc = calculaImc(peso, altura);
-		tdImc.textContent = imc;
-		
-	}
-}					function validaPeso(peso){
-				
-				if(peso >=0 && peso <= 1000){
-					return true;			
-					
-				}else{
-					return false;
-				}
-	
-			}
-			function validaAltura(altura){
-				
-				if (altura >= 0 && altura <= 3.0){
-					return true;
-					
-				}else{
-				
-				return false;
-				}
-				
-				}
-		//função para calcular o imc do paciente
-	 function calculaImc(peso, altura){
-		 var imc = 0;
-		 imc = peso / (altura * altura);
-		 return imc.toFixed(2);;
-		 
-		 
-	 }
-	
+	    var pacienteAtual = { 
+	        nome : tdNome.textContent, 
+	        peso : tdPeso.textContent, 
+	        altura : tdAltura.textContent,
+	        pegaImc: function() {
+
+	            if(this.altura != 0){
+	                var imc = this.peso / (this.altura * this.altura);
+	                return imc;
+	            } else{
+
+	                console("Não posso dividir por zero!");
+	            }
+	        }
+	    };    
+
+	    var imc = pacienteAtual.pegaImc();
+
+	    var tdImc = pacienteTr.getElementsByClassName("info-imc")[0]; 
+	    tdImc.textContent = imc;
+
+	    console.log(imc);
+	}); 
+});
+
+
+
+
+
+
+
+
